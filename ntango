@@ -1,0 +1,1 @@
+java -Xmx512M -cp classes:nlogo/NetLogo.jar:lib/imgscalr-lib-4.2.jar ntango.Main
