@@ -75,9 +75,12 @@ public class Plot extends Touchable {
 			Pen pen = new Pen(npen);
 			pen.setStartX(getMinX());
 			pens.add(pen);
-			
-
 		}
+		// height is the largest 18 per pen plus bottom and top margins or 150
+		this.height = ((TMARGIN + BMARGIN + pens.size() * 18) < 150) ? 150 : TMARGIN + BMARGIN  + pens.size() * 18; 
+		
+//		this.setHeight(30 + pens.size() * 22);
+		
 	}
 
 	public Pen getPen(String name) {
