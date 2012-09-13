@@ -41,42 +41,6 @@ public class ModelButton extends Button {
 
 	public void draw(Graphics2D g, boolean highlighted)
 	{
-		//
-		//		if (!visible) return;
-		////		Color color = (highlighted) ? new Color(0x99ffffff, true) : new Color(100);
-		//
-		//		Rectangle rect = shape.getBounds();
-		//		int bx = (int)rect.getX();
-		//		int by = (int)rect.getY();
-		//		int bw = (int)rect.getWidth();
-		//		int bh = (int)rect.getHeight();
-		//
-		//		/*
-		//	      if (checked) {
-		//	         g.setColor(Color.GRAY);
-		//	      }
-		//
-		//	      g.setPaint(
-		//	         new GradientPaint(
-		//	            bx, by, LIGHT_GRAY,
-		//	            bx, by + bh, GRAY));
-		//	      g.fill(shape);
-		//	      g.setColor(DARK_GRAY);
-		////	      g.setStroke(STROKE1);
-		//	      g.draw(shape);
-		//		 */
-		//
-		//
-		//		if (image != null) {
-		//			int iw = image.getWidth();
-		//			int ih = image.getHeight();
-		//			g.drawImage(image, bx + bw/2 - iw/2, by + bh/2 - ih/2, null);
-		//		} 
-		////		else if (icon != null) {
-		////			g.setColor(enabled ? Color.BLACK : GRAY);
-		////			g.fill(icon);
-		////		}
-
 		if (!visible) return;
 
 		Rectangle rect = shape.getBounds();
@@ -85,24 +49,9 @@ public class ModelButton extends Button {
 		int bw = (int)rect.getWidth();
 		int bh = (int)rect.getHeight();
 
-		/*
-	      if (checked) {
-	         g.setColor(Color.GRAY);
-	      }
-
-	      g.setPaint(
-	         new GradientPaint(
-	            bx, by, LIGHT_GRAY,
-	            bx, by + bh, GRAY));
-	      g.fill(shape);
-	      g.setColor(DARK_GRAY);
-	      g.setStroke(STROKE1);
-	      g.draw(shape);
-		 */
 
 		int iw = image.getWidth();
 		int ih = image.getHeight();
-		
 		
 		// make the background flash if the model is highlighted
 		if(highlighted){

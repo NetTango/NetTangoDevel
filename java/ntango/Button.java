@@ -150,7 +150,7 @@ public class Button {
       g.draw(shape);
       */
       
-      g.drawRect(bx, by, bw, bh);
+//      g.drawRect(bx, by, bw, bh);
       
       if (image != null) {
          int iw = image.getWidth();
