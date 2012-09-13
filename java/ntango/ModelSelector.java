@@ -22,7 +22,7 @@ public class ModelSelector extends Touchable {
 	protected String name;
 	protected String[] modelNames;
 	protected static int MARGIN = 25;
-	protected Button target = null;
+	protected ModelButton target = null;
 	protected HashMap<String, String> models;
 	protected String loadedModel;
 	private boolean showBorder = true;
@@ -37,7 +37,7 @@ public class ModelSelector extends Touchable {
 	/*
 	 * ArrayList of all models as buttons
 	 */
-	protected ArrayList<Button> modelButtons = new ArrayList<Button>();
+	protected ArrayList<ModelButton> modelButtons = new ArrayList<ModelButton>();
 
 	public static Color [] WATCH_COLORS = {
 		Color.RED,
@@ -116,7 +116,7 @@ public class ModelSelector extends Touchable {
 			String imageUrl = "/images/" + modelName.substring(0, modelName.lastIndexOf('.')) + ".png";
 			double x1 = MARGIN + 1 + col * (modelButtonWidth + MARGIN);
 			double y1 = MARGIN + 1 + row * (modelButtonWidth + MARGIN);
-			Button button = new Button((int)x1, (int)y1, modelButtonWidth, modelButtonWidth, modelUrl);		
+			ModelButton button = new ModelButton((int)x1, (int)y1, modelButtonWidth, modelButtonWidth, modelUrl);		
 			// find image
 			button.setImage(Palette.createImage(imageUrl, modelButtonWidth));
 			// setting the label to the name of the model file sans .nlogo
@@ -188,10 +188,11 @@ public class ModelSelector extends Touchable {
 		 * draw model buttons here
 		 */
 
-		for(Button button: modelButtons)
+		for(ModelButton button: modelButtons)
 		{
+			boolean highlighted = (button.getAction().equals(loadedModel)) ? true : false;
 			// the button draw method just draws the image
-			button.draw(g);
+			button.draw(g, highlighted);
 			// so we need to add text too
 			// - maybe I should extend Button class to a ModelButton class? 
 			g.setFont(new Font(Font.SANS_SERIF, 12, 12));
@@ -224,7 +225,7 @@ public class ModelSelector extends Touchable {
 
 	public void onDown() {
 		this.target = null;
-		for (Button button : modelButtons) {
+		for (ModelButton button : modelButtons) {
 			if (button.containsTouch(touchX, touchY) && button.isEnabled()) {
 				this.target = button;
 				dragging = false;

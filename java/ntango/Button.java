@@ -150,12 +150,14 @@ public class Button {
       g.draw(shape);
       */
       
+      g.drawRect(bx, by, bw, bh);
+      
       if (image != null) {
          int iw = image.getWidth();
          int ih = image.getHeight();
          g.drawImage(image, bx + bw/2 - iw/2, by + bh/2 - ih/2, null);
       } else if (icon != null) {
-         g.setColor(enabled ? Color.BLACK : GRAY);
+         g.setColor(enabled ? Color.BLACK : Color.GRAY);
          g.fill(icon);
       }
 
