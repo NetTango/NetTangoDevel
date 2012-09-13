@@ -110,6 +110,8 @@ public class Touchable implements TouchListener, Tweenable {
 
    
    protected void drawWidget(Graphics2D g) {
+	   if(!visible) return;
+	   
       if (closed || width <= 0 || height <= 0) return;
       AffineTransform old = g.getTransform();
       g.transform(tform);
@@ -211,7 +213,7 @@ public class Touchable implements TouchListener, Tweenable {
    }
 
    public void setVisible(boolean visible) {
-      this.visible = visible;
+	   this.visible = visible;
    }
 
    public boolean isClosed() {

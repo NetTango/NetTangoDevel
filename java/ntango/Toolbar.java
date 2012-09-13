@@ -143,6 +143,7 @@ public class Toolbar extends Touchable {
    
 
    public void draw(Graphics2D g) {
+	   if(!visible) return;
       
       int w = getWidth();
       int h = getHeight();

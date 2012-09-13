@@ -12,6 +12,8 @@ package touch;
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.LinkedList;
+
+import ntango.Plot;
 import touch.ui.SurfaceWidget;
 
 
@@ -91,11 +93,45 @@ public class WidgetLayer {
 
    public void disableWidgets() {
       for (Touchable w : widgets) {
-         if (w instanceof SurfaceWidget) {
+    	  if (w instanceof SurfaceWidget) {
             ((SurfaceWidget)w).setEnabled(false);
-         }
+         } 
       }
    }
+
+   public void hideWidgets() {
+	   for (Touchable w : widgets) {
+		   // once for surface widgets (all the ui class objects)
+		   if (w instanceof SurfaceWidget) {
+			   ((SurfaceWidget)w).setVisible(false);
+		   }
+		   // and once for plots
+		   else {
+			   if(w instanceof Plot)
+			   {
+				   ((Plot)w).setVisible(false);
+			   }
+		   }
+
+	   }	   
+   }
+
+   public void showWidgets() {
+	   for (Touchable w : widgets) {
+		   // once for surface widgets
+		   if (w instanceof SurfaceWidget) {
+			   ((SurfaceWidget)w).setVisible(true);
+		   }
+		   // and once for plots
+		   else {
+			   if(w instanceof Plot)
+			   {
+				   ((Plot)w).setVisible(true);
+			   }
+		   }
+
+	   }
+	   }   
 
 	public void cleanup() {
 

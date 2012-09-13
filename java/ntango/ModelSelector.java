@@ -23,8 +23,8 @@ public class ModelSelector extends Touchable {
 	protected String[] modelNames;
 	protected static int MARGIN = 25;
 	protected Button target = null;
-
 	protected HashMap<String, String> models;
+	protected String loadedModel;
 	private boolean showBorder = true;
 
 	/*
@@ -132,6 +132,7 @@ public class ModelSelector extends Touchable {
 	}
 
 	public void onClick(Button button) {
+		loadedModel = button.getAction();
 		app.loadModel(button.getAction(), button.getAction());
 	}
 
@@ -208,8 +209,14 @@ public class ModelSelector extends Touchable {
 			g.drawString(button.getLabel().substring(0, endChar), 
 					(int)button.getShape().getBounds2D().getX() + 5,  
 					(int)button.getShape().getBounds2D().getY() + button.getImage().getHeight() + MARGIN / 2);
+			// if this was the last loaded model, then we draw a red rectangle around it
+			if(button.getLabel().equals(loadedModel))
+			{
+				// todo
+			}
 
 		}
+
 		
 
 	}

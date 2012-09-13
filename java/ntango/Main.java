@@ -42,7 +42,7 @@ public class Main extends SurfaceFrame implements Tweenable, ActionListener, Key
    protected Toolbar tools;
    protected BufferedImage logo;
    protected ModelSelector modelSelector;
-
+   
    public static Main instance;
 
    
@@ -61,6 +61,7 @@ public class Main extends SurfaceFrame implements Tweenable, ActionListener, Key
 
       
       this.tools = new Toolbar(model);
+      this.tools.setVisible(false);
       this.logo = Palette.createImage("/images/Logo.png");
       addKeyListener(this);
       
@@ -69,14 +70,19 @@ public class Main extends SurfaceFrame implements Tweenable, ActionListener, Key
    
    public void showSelector()
    {
+	   hideWidgets(WIDGET_LAYER);
+	   hideWidgets(PLOT_LAYER);	   
 	   this.view.setVisible(false);
+	   this.tools.setVisible(false);
 	   this.modelSelector.setVisible(true);
 	   
    }
    
    public void showModel()
    {
-
+	   showWidgets(WIDGET_LAYER);
+	   showWidgets(PLOT_LAYER);
+	   this.tools.setVisible(true);
 	   this.view.setVisible(true);
 	   this.modelSelector.setVisible(false);
 	   
@@ -89,6 +95,7 @@ public class Main extends SurfaceFrame implements Tweenable, ActionListener, Key
    }
 
    public void addModelPlot(Touchable t) {
+	   
       addTouchable(t, PLOT_LAYER);
    }
 
@@ -218,7 +225,9 @@ public class Main extends SurfaceFrame implements Tweenable, ActionListener, Key
       }
       g.setColor(new Color(0xbbffffff, true));
       g.setFont(new Font(null, 0, 20));
-      g.drawString(model.getName(), 15, 37);
+
+      // not drawing the name of the model anymore.
+      //      g.drawString(model.getName(), 15, 37);
    }
   
 

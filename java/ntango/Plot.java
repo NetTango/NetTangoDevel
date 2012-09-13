@@ -75,7 +75,6 @@ public class Plot extends Touchable {
 			Pen pen = new Pen(npen);
 			pen.setStartX(getMinX());
 			pens.add(pen);
-			System.out.println(pen.name);
 			
 
 		}
@@ -110,8 +109,18 @@ public class Plot extends Touchable {
 		
 
 	}
+	
+	public void setVisible(boolean visible)
+	{
+		this.visible = visible;
+	}
 
 	public void draw(Graphics2D g) {
+
+		if(!visible) return;
+
+		
+//		System.out.println("Drawing Plot, visible: " + this.visible);
 		setBounds();
 
 		float _maxx = (int)(maxx * 1.2);

@@ -252,7 +252,7 @@ protected boolean onBall(double tx, double ty) {
       // if the remainder is is bigger than half the increment, we need add the last bit to get it up to next remainder
       // if it is smaller, then we need to subtract it
       double number = (remainder >= remainder / 2) ? rawValue + increment - remainder : rawValue - remainder;
-      System.out.println(this.text +  " increment: " + increment);
+
 	return number; 
    }
    

@@ -217,7 +217,8 @@ public abstract class SurfaceFrame extends JPanel
     * Adds an object to the given layer
     */
    public void addTouchable(Touchable touchable, int layer) {
-      layers.get(layer).addWidget(touchable);
+      System.out.println("Layer: " + layer);
+	   layers.get(layer).addWidget(touchable);
    }
 
    public void clearWidgets(int layer) {
@@ -233,6 +234,17 @@ public abstract class SurfaceFrame extends JPanel
    public void disableWidgets(int layer) {
       layers.get(layer).disableWidgets();
    }
+   
+   public void hideWidgets(int layer)
+   {
+	   layers.get(layer).hideWidgets();
+   }
+   
+   public void showWidgets(int layer)
+   {
+	   layers.get(layer).showWidgets();
+   }
+   
 
    public boolean isTopMost(Touchable touchable) {
       for (WidgetLayer layer : layers) {

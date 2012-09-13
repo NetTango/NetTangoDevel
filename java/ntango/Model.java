@@ -319,7 +319,6 @@ public class Model implements ButtonListener {
 			// sometimes people include decimals in their increments, e.g. 1.0
 			// make sure we don't count that as a decimal
 			decimals = (Double.parseDouble(decimalsString) == 0 ) ? 0 : decimalsString.length();
-			System.out.println(decimalsString + ", " + decimals);
 		}
 
 
