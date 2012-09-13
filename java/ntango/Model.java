@@ -295,6 +295,34 @@ public class Model implements ButtonListener {
 		String max = in.readLine();
 		String curr = in.readLine();
 		String incr = in.readLine();
+		// calculate the number of digits here
+		int digits = 0;
+		// if there is no point, just find the length of the incr string
+		if(!incr.contains("."))
+		{
+			digits = incr.length();
+		}// else count only up to the point
+		else
+		{
+			int pointPosition = incr.lastIndexOf(".");
+			String digitsString = incr.substring(0, pointPosition);
+			digits = digitsString.length();
+		}
+		
+		// calculate number of decimals here
+		int decimals = 0;
+
+		if(incr.contains("."))
+		{
+			int pointPosition = incr.lastIndexOf(".");
+			String decimalsString =  incr.substring(pointPosition + 1, incr.length());
+			// sometimes people include decimals in their increments, e.g. 1.0
+			// make sure we don't count that as a decimal
+			decimals = (Double.parseDouble(decimalsString) == 0 ) ? 0 : decimalsString.length();
+			System.out.println(decimalsString + ", " + decimals);
+		}
+
+
 		in.readLine();
 		String unit = in.readLine();
 		if ("nil".equalsIgnoreCase(unit)) unit = "";
@@ -309,6 +337,16 @@ public class Model implements ButtonListener {
 		slider.setPosition(toInt(x0) * 2, toInt(y0) * 2);
 		slider.setUnit(unit);
 		slider.setButtonListener(this);
+		// set number of digits
+		slider.setDigitSpaces(digits);
+		// set number of decimals
+		slider.setDecimals(decimals);
+		// set increment
+		slider.setIncrement(Double.parseDouble(incr));	
+		
+		// resize to take into account number of digits and decimals
+		slider.resize();
+		
 		app.addModelWidget(slider);
 
 	}

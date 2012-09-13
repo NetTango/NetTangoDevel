@@ -32,12 +32,22 @@ public class SurfaceSlider extends SurfaceWidget {
    protected boolean down;
    protected String unit;
    protected ButtonListener listener;
+   protected int decimalSpaces;
+   protected int digitSpaces;
+   protected DecimalFormat decimalValue;
+   protected double increment;
+   protected int gutter;
    
-   DecimalFormat twoDecs = new DecimalFormat("#.00");
+//   DecimalFormat oneDec = new DecimalFormat("#.0");
+//   DecimalFormat twoDecs = new DecimalFormat("#.00");
+//   DecimalFormat threeDecs = new DecimalFormat("#.000");
+//   DecimalFormat fourDecs = new DecimalFormat("#.0000");
+//   DecimalFormat fiveDecs = new DecimalFormat("#.00000");
    
    
 
    public SurfaceSlider(String text) {
+	  
       super(text);
       this.max = 30;
       this.min = 0;
@@ -81,15 +91,64 @@ public class SurfaceSlider extends SurfaceWidget {
       this.value = value;
    }
 
-   public void setUnit(String unit) {
+   public double getIncrement() {
+	return increment;
+}
+
+public void setIncrement(double increment) {
+	this.increment = increment;
+}
+
+public void setUnit(String unit) {
       this.unit = unit;
    }
 
    public String getUnit() {
       return this.unit;
    }
+   
+   public void setDecimals(int decimals)
+   {
+	   // set decimals
+	   this.decimalSpaces = decimals;	   
+	   // set the decimal format
+	   switch(decimals){
+	   case 1 : decimalValue = new DecimalFormat("0.#");
+	   break;
+	   case 2 : decimalValue = new DecimalFormat("0.##");
+	   break;
+	   case 3 : decimalValue = new DecimalFormat("0.###");
+	   break;
+	   case 4 : decimalValue = new DecimalFormat("0.####");
+	   break;
+	   case 5 : decimalValue = new DecimalFormat("0.#####");
+	   break;
+	   case 6 : decimalValue = new DecimalFormat("0.######");
+	   break;
+	   default : decimalValue = new DecimalFormat();
+	   break;
 
-   protected boolean onBall(double tx, double ty) {
+	   }
+	   
+
+	   
+	   
+   }
+   
+   public int getDecimals()
+   {
+	   return decimalSpaces;
+   }
+
+   public int getDigitSpaces() {
+	return digitSpaces;
+}
+
+public void setDigitSpaces(int digitSpaces) {
+	this.digitSpaces = digitSpaces;
+}
+
+protected boolean onBall(double tx, double ty) {
 
       double bw = getBallWidth() * 2;
       double bx = getBallX() - bw/2;
@@ -159,7 +218,7 @@ public class SurfaceSlider extends SurfaceWidget {
 
       g.setColor(Color.LIGHT_GRAY);
       g.setFont(font);
-      String s = twoDecs.format(value) + unit;
+      String s = decimalValue.format(value) + unit;
       g.drawString(s, w - getGutter() + 5, h - 17);
 
       g.setFont(new Font(null, 0, 14));
@@ -172,14 +231,29 @@ public class SurfaceSlider extends SurfaceWidget {
    }
 
    private int getGutter() {
-      return 65;
+      return gutter;
+   }
+   private void setGutter(int gutter)
+   {
+	   this.gutter = gutter;
    }
    
+   // this calculates the value of the slider based on the position of the ball.
    private double getBallX(double min2) {
       double w = getWidth() - getMargin() * 2 - getGutter();
       double range = max - min;
       double scale = (range / w);
-      return (min2 - min) / scale + getMargin();
+      // it needs to take into account the number of decimals, and the increments
+      //return (min2 - min) / scale + getMargin();
+      double rawValue = (min2 - min) / scale + getMargin();
+      // find remainder of value divided by increment,
+      // then round off to nearest increment value
+      double remainder = rawValue % this.increment;
+      // if the remainder is is bigger than half the increment, we need add the last bit to get it up to next remainder
+      // if it is smaller, then we need to subtract it
+      double number = (remainder >= remainder / 2) ? rawValue + increment - remainder : rawValue - remainder;
+      System.out.println(this.text +  " increment: " + increment);
+	return number; 
    }
    
    private double getBallX() {
@@ -203,13 +277,28 @@ public class SurfaceSlider extends SurfaceWidget {
 
    private void computeValue(double tx) {
 	   
-	   // rounding off to 
+	   // The rounding we do needs to be rounded to nearest increment
+	   // it also needs to take into consideration that we may have different numbers of decimals
 	   this.value = (double)getValue(tx);
-	   value *= 100;
+
+	   double multiplier = Math.pow(10,  decimalSpaces);
+	   // here we multiply with 10 to the power of number of decimals
+	   value *= multiplier;
+
 	   value = Math.round(value);
-	   value = value / 100;
-      if (value < min) value = min;
+	   //	   System.out.println(value);	   
+	   value /= multiplier;
+
+	   double remainder = value % this.increment;
+	   // if the remainder is is bigger than half the increment, we need add the last bit to get it up to next remainder
+	   // if it is smaller, then we need to subtract it
+	   value = (remainder >= remainder / 2) ? value + increment - remainder : value - remainder;
+//	   System.out.println(this.text +  " increment: " + increment);	   
+
+
+	   if (value < min) value = min;
       if (value > max) value = max;
+      
    }
 
    public void touchDown(TouchFrame frame) {
@@ -252,5 +341,12 @@ public class SurfaceSlider extends SurfaceWidget {
       if (listener != null) {
          listener.buttonReleased(this);
       }
+   }
+   
+   public void resize()
+   {
+	   // set size to 15 px per digit, decimal, point space, and each char in the unit + 5 px for space to the left 
+	   int gutter = ((digitSpaces + decimalSpaces + 1 + this.unit.length()) * 15) + 5;
+	   this.setGutter(gutter);
    }
 }
