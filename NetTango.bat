@@ -1,1 +1,0 @@
-java -cp "classes;/Applications/NetLogo 5.0.2/NetLogo.jar" ntango.Main
