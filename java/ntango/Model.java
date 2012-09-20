@@ -32,6 +32,9 @@ public class Model implements ButtonListener {
 	protected String name;
 
 	protected boolean isTouchable; //true if there are touch procedures in netlogo code 
+	protected boolean hasTouchDown;
+	protected boolean hasTouchUp;
+	protected boolean hasTouchDrag;
 
 
 	public static Color [] WATCH_COLORS = {
@@ -115,7 +118,12 @@ public class Model implements ButtonListener {
 			 */
 
 			Map<String,Procedure> modelProcedures = this.workspace.getProcedures();
-			isTouchable = modelProcedures.containsKey("TOUCH-DOWN");
+			hasTouchDown = modelProcedures.containsKey("TOUCH-DOWN");
+			hasTouchUp = modelProcedures.containsKey("TOUCH-UP");
+			hasTouchDrag = modelProcedures.containsKey("TOUCH-DRAG");
+			
+			System.out.println(this.name + " : down: " + hasTouchDown + ", up: " + hasTouchUp + ", drag: " + hasTouchDrag);
+
 
 
 		} catch (Exception x) {
@@ -189,7 +197,7 @@ public class Model implements ButtonListener {
 
 
 	public void doTouchDown(float touchX, float touchY, int touchId) {
-		if (isLoaded() && workspace.isValidIdentifier("touch-down")) {
+		if (isLoaded() && hasTouchDown) {
 			workspace.command("touch-down " + touchX + " " + touchY + " " + touchId);
 		} else {
 			System.out.println("Ignoring touch-down event");
@@ -197,7 +205,7 @@ public class Model implements ButtonListener {
 	}
 
 	public void doTouchUp(float touchX, float touchY, int touchId) {
-		if (isLoaded() && workspace.isValidIdentifier("touch-up")) {
+		if (isLoaded() && hasTouchUp) {
 			workspace.command("touch-up " + touchX + " " + touchY + " " + touchId);
 			System.out.println("touch-up " + touchX + " " + touchY + " " + touchId);
 		} else {
@@ -206,7 +214,7 @@ public class Model implements ButtonListener {
 	}
 
 	public void doTouchDrag(float touchX, float touchY, int touchId) {
-		if (isLoaded() && workspace.isValidIdentifier("touch-down")) {
+		if (isLoaded() && hasTouchDrag) {
 			workspace.command("touch-drag " + touchX + " " + touchY + " " + touchId);
 		} else {
 			System.out.println("Ignoring touch-drag event");

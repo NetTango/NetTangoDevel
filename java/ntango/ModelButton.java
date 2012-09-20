@@ -7,6 +7,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
+import touch.TouchFrame;
+
 public class ModelButton extends Button {
 
 	//	protected boolean highlighted;
@@ -65,6 +67,8 @@ public class ModelButton extends Button {
 			g.drawImage(image, bx + bw/2 - iw/2, by + bh/2 - ih/2, null);
 		}
 	}
+	
+	
 
 }
 

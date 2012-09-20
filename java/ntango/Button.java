@@ -122,6 +122,7 @@ public class Button {
    }
    
    public boolean containsTouch(float tx, float ty) {
+	   System.out.println("tx: " + tx + ", ty: " + ty + "contains: " + this.shape.contains(tx, ty));
       return this.shape.contains(tx, ty);
    }
 

@@ -201,7 +201,7 @@ public class WorldView extends Touchable {
 	public void touchDown(TouchFrame frame) {
 		for (TouchEvent te : frame.getTouchEvents()) {
 			// AH added check here for whether model is touchable, if not, we don't do anything.
-			if (te.isFinger() && model.isTouchable) {
+			if (te.isFinger()) {
 				model.doTouchDown(getModelX(te.getLocalX()),
 						getModelY(te.getLocalY()),
 						te.getTouchID());

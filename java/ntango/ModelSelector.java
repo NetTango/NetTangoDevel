@@ -12,6 +12,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import touch.TouchFrame;
 import touch.Touchable;
 
 
@@ -54,6 +55,7 @@ public class ModelSelector extends Touchable {
 	public ModelSelector(Main app)  {
 		this.app = app;
 		this.name = "Select a Model";
+		this.resizable = false;
 
 		setWidth(540 + MARGIN * 2);
 		setHeight(540 + MARGIN * 2);
@@ -227,8 +229,8 @@ public class ModelSelector extends Touchable {
 		this.target = null;
 		for (ModelButton button : modelButtons) {
 			if (button.containsTouch(touchX, touchY) && button.isEnabled()) {
-				this.target = button;
-				dragging = false;
+				loadedModel = button.getAction();
+				app.loadModel(button.getAction(), button.getAction());
 				break;
 			}
 		}
@@ -284,4 +286,8 @@ public class ModelSelector extends Touchable {
 		this.mouseX = e.getX();
 		this.mouseY = e.getY();
 	}
+	   public void touchDown(TouchFrame frame) {
+		   System.out.println("Model Selector touch");
+		      onDown();
+		   }
 }
