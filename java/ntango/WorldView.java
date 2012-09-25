@@ -113,22 +113,28 @@ public class WorldView extends Touchable {
 			Shape clip = g.getClip();
 			g.clipRect(x, y, w, h);
 			AffineTransform save = g.getTransform();
-			g.translate(x + w/2, y + h/2);
-			g.scale(1, -1);
 
 			
-			/*
-			 * Find out how to get a background image loaded in here.			
-			if(backgroundImageLoaded)
+
+//			 * Find out how to get a background image loaded in here.			
+			if(model.bgLoaded)
 			{
-				g.drawImage(backgroundImage, 0, 0, null);
+				model.resizeBackground((int)width * 2, (int)height * 2);
+				g.drawImage(model.getBackgroundImage(), 0, 0, null);
 			}
-			*/
+			else
+			{
+				g.translate(x + w/2, y + h/2);
+				g.scale(1, -1);
+
+				for (Patch patch : frame.getPatches()) {
+					patch.draw(g, psize);
+				}				
+			}
+	
 			
 			
-			for (Patch patch : frame.getPatches()) {
-				patch.draw(g, psize);
-			}
+
 
 			for (Turtle turtle : frame.getTurtles()) {
 				turtle.draw(g, psize);

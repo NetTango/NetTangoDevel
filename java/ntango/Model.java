@@ -4,6 +4,7 @@
 package ntango;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,6 +22,8 @@ import touch.ui.SurfaceMonitor;
 import touch.ui.SurfaceSlider;
 import touch.ui.SurfaceWidget;
 
+import org.imgscalr.Scalr;
+
 public class Model implements ButtonListener {
 
 	protected HeadlessWorkspace workspace;
@@ -35,6 +38,13 @@ public class Model implements ButtonListener {
 	protected boolean hasTouchDown;
 	protected boolean hasTouchUp;
 	protected boolean hasTouchDrag;
+	
+	/*
+	 * background image variables
+	 */
+	protected BufferedImage backgroundImage;
+	protected boolean bgLoaded = false;
+	
 
 
 	public static Color [] WATCH_COLORS = {
@@ -57,6 +67,11 @@ public class Model implements ButtonListener {
 		this.loaded = false;
 		this.watches = new java.util.HashMap<Integer, Color>();
 		this.name = "";
+		
+		
+
+		
+		
 	}
 
 	public boolean isLoaded() {
@@ -79,6 +94,39 @@ public class Model implements ButtonListener {
 		i = Math.max(i, stream.getMinIndex());
 		i = Math.min(i, stream.getMaxIndex());
 		this.findex = i;
+	}
+
+	public BufferedImage getBackgroundImage() {
+		return backgroundImage;
+	}
+
+	public void setBackgroundImage(BufferedImage backgroundImage) {
+		this.backgroundImage = backgroundImage;
+		this.bgLoaded = true;
+	}
+
+	public boolean isBgLoaded() {
+		return bgLoaded;
+	}
+	
+	public void resizeBackground(int w, int h)
+	{
+//		Scalr scaler = new Scalr();
+		backgroundImage = Scalr.resize(backgroundImage, w, h);
+	}
+	public void resizeBackground()
+	{
+//		backgroundImage = Scalr.resize(backgroundImage, this.width, this.height);
+	}
+	
+	public void discardBackground()
+	{
+		this.backgroundImage = null;
+		this.bgLoaded = false;
+	}
+
+	public void setBgLoaded(boolean bgLoaded) {
+		this.bgLoaded = bgLoaded;
 	}
 
 	private void clear() {
