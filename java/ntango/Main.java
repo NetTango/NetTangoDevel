@@ -210,6 +210,13 @@ public class Main extends SurfaceFrame implements Tweenable, ActionListener, Key
       }
    }
    
+   public void setBackgroundImage(String path)
+   {
+	   // redo this one - it needs to be a string
+	 //  model.setBackgroundImage(backgroundImage);
+	   model.setBackgroundImage(path);
+   }
+   
    //------------------------------------------------------------
    // DRAWING EVENTS
    //------------------------------------------------------------

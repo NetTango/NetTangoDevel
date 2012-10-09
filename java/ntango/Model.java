@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ import touch.ui.SurfaceSlider;
 import touch.ui.SurfaceWidget;
 
 import org.imgscalr.Scalr;
+
+import com.sun.tools.javac.util.List;
 
 public class Model implements ButtonListener {
 
@@ -100,8 +103,8 @@ public class Model implements ButtonListener {
 		return backgroundImage;
 	}
 
-	public void setBackgroundImage(BufferedImage backgroundImage) {
-		this.backgroundImage = backgroundImage;
+	public void setBackgroundImage(String backgroundImagePath) {
+		this.backgroundImage = Palette.createImage(backgroundImagePath, 400);
 		this.bgLoaded = true;
 	}
 
@@ -156,6 +159,16 @@ public class Model implements ButtonListener {
 					initMonitor(in);
 				}
 			}
+			
+			/*
+			 * TESTCODE:Add a background selector to only Bug Hunt Camouflage
+			 */
+			
+			initBackroundSelector();
+			
+			
+			
+			
 			in.close();
 
 			this.loaded = true;
@@ -179,6 +192,8 @@ public class Model implements ButtonListener {
 		}
 
 	}
+
+
 
 
 	public synchronized void setup() {
@@ -403,8 +418,18 @@ public class Model implements ButtonListener {
 		slider.resize();
 		
 		app.addModelWidget(slider);
-
 	}
+	
+	private void initBackroundSelector() {
+		
+		
+		SurfaceSelectorBackgroundImages bgSelector = new SurfaceSelectorBackgroundImages(app);
+		bgSelector.setPosition(500, 500);
+		app.addModelWidget(bgSelector);
+		
+	}	
+	
+	
 	private void initMonitor(BufferedReader in) throws IOException
 	{
 
