@@ -84,57 +84,35 @@ public class WorldView extends Touchable {
 		float psize = (float)w / model.getWorldWidth();
 		Shapes.PATCH_SIZE = psize;
 
-		/*
-      float x = 0;
-      float y = 0;
 
-      float[] dist = { 0.0f, 1.0f };
-      Color[] colors = { new Color(0x66ffffff, true), new Color(0x00ffffff, true) };
-
-      RadialGradientPaint paint = new RadialGradientPaint(
-         touchX, touchY, psize * 6, dist, colors);
-      g.setPaint(paint);
-
-      for (int i = model.getMinPX(); i <= model.getMaxPX(); i++) {
-         g.drawLine((int)x, (int)y, (int)x, (int)y + h);
-         x += psize;
-      }
-
-      x = 0;
-      y = 0;
-      for (int i = model.getMinPY(); i <= model.getMaxPY(); i++) {
-         g.drawLine((int)x, (int)y, (int)x + w, (int)y);
-         y += psize;
-      }
-		 */
 
 		SimFrame frame = model.getCurrentFrame();
 		if (frame != null) {
 			Shape clip = g.getClip();
 			g.clipRect(x, y, w, h);
 			AffineTransform save = g.getTransform();
-
 			
 
 //			 * Find out how to get a background image loaded in here.			
 			if(model.bgLoaded)
 			{
+				// commeted out so we don't resize every time interval
+				model.resizeBackground((int)width * 2, (int)height * 2);
 				model.resizeBackground((int)width * 2, (int)height * 2);
 				g.drawImage(model.getBackgroundImage(), 0, 0, null);
-			}
-			else
-			{
-				g.translate(x + w/2, y + h/2);
-				g.scale(1, -1);
 
+			}
+			
+			// Put the origin in the middle of the world with the y-axis going up
+			g.translate(x + w/2, y + h/2);
+			g.scale(1, -1);
+
+			// Draw the patches only if there's not a background image loaded
+			if (!model.bgLoaded) {
 				for (Patch patch : frame.getPatches()) {
 					patch.draw(g, psize);
 				}				
 			}
-	
-			
-			
-
 
 			for (Turtle turtle : frame.getTurtles()) {
 				turtle.draw(g, psize);
@@ -240,6 +218,8 @@ public class WorldView extends Touchable {
 		this.mouseY = e.getY();
 		this.touchX = screenToObjectX(e.getX(), e.getY());
 		this.touchY = screenToObjectY(e.getX(), e.getY());
+		System.out.println("mousePressed: " + touchX + ", " + touchY);
+		model.doTouchDown((float)touchX, (float)touchY, 0);
 		onDown();
 	}
 

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -139,6 +140,7 @@ public class Model implements ButtonListener {
 	}
 
 	public synchronized void load(String filename) {
+		System.out.println("load");
 		try {
 			clear();
 			this.workspace = HeadlessWorkspace.newInstance();
@@ -261,27 +263,29 @@ public class Model implements ButtonListener {
 
 	public void doTouchDown(float touchX, float touchY, int touchId) {
 		if (isLoaded() && hasTouchDown) {
-			workspace.command("touch-down " + touchX + " " + touchY + " " + touchId);
+			workspace.command("touch-down " + touchX + " " + touchY);// ignore touch ID for now + " " + touchId);
 		} else {
 			System.out.println("Ignoring touch-down event");
 		}
 	}
 
 	public void doTouchUp(float touchX, float touchY, int touchId) {
-		if (isLoaded() && hasTouchUp) {
-			workspace.command("touch-up " + touchX + " " + touchY + " " + touchId);
-			System.out.println("touch-up " + touchX + " " + touchY + " " + touchId);
-		} else {
-			System.out.println("Ignoring touch-up event");
-		}
+		// commented out until touch up works as intended
+//		if (isLoaded() && hasTouchUp) {
+//			workspace.command("touch-up " + touchX + " " + touchY + " " + touchId);
+//			System.out.println("touch-up " + touchX + " " + touchY + " " + touchId);
+//		} else {
+//			System.out.println("Ignoring touch-up event");
+//		}
 	}
 
 	public void doTouchDrag(float touchX, float touchY, int touchId) {
-		if (isLoaded() && hasTouchDrag) {
-			workspace.command("touch-drag " + touchX + " " + touchY + " " + touchId);
-		} else {
-			System.out.println("Ignoring touch-drag event");
-		}
+		// commented out until touch draw works as intended
+//		if (isLoaded() && hasTouchDrag) {
+//			workspace.command("touch-drag " + touchX + " " + touchY + " " + touchId);
+//		} else {
+//			System.out.println("Ignoring touch-drag event");
+//		}
 	}
 
 	public void addWatch(Turtle t) {
@@ -424,7 +428,18 @@ public class Model implements ButtonListener {
 		
 		
 		SurfaceSelectorBackgroundImages bgSelector = new SurfaceSelectorBackgroundImages(app);
-		bgSelector.setPosition(500, 500);
+		/*
+		 * iterate through xml file here and get each of the nodes with a background image
+		 */
+		ArrayList<String> bgNames = new ArrayList<String>();
+		// this one will clear the background
+		bgNames.add("blank");
+		bgNames.add("/images/Bug Hunt Camouflage.png");
+		bgNames.add("/images/Bug Hunt Camouflage.png");
+		bgSelector.setImages(bgNames);
+		bgSelector.layout();
+		bgSelector.setMovable(false);
+		bgSelector.setPosition(1200, 100);
 		app.addModelWidget(bgSelector);
 		
 	}	

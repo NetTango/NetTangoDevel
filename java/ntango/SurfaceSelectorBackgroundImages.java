@@ -34,9 +34,10 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 	protected String[] modelNames;
 	protected static int MARGIN = 25;
 	protected ModelButton target = null;
-	protected List<String> backgroundImages;
+	protected ArrayList<BackgroundImageButton> buttons = new ArrayList<BackgroundImageButton>();
 	protected String loadedModel;
 	private boolean showBorder = true;
+	
 
 	/*
 	 * set this to where the models are
@@ -48,7 +49,8 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 	/*
 	 * ArrayList of all models as buttons
 	 */
-	protected ArrayList<ModelButton> modelButtons = new ArrayList<ModelButton>();
+	protected ArrayList<BackgroundImageButton> modelButtons = new ArrayList<BackgroundImageButton>();
+	private ArrayList<String> backgroundImages;
 
 	public static Color [] WATCH_COLORS = {
 		Color.RED,
@@ -78,42 +80,53 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 		setResizable(false);
 		setRotatable(false);
 
-
-
-			
-	
-
 	}
 	
-	public void setImages(List<String> images)
+	public void setImages(ArrayList<String> bgNames)
 	{
-		backgroundImages = images;
+		backgroundImages = bgNames;
+
 	}
-	
+	/*
+	 * this method layouts all of the background image buttons inside the background selector frame
+	 */
 	public void layout()
 	{
+		/*
+		 * set the height to margin plus each image plus a margin plus a margin at the end
+		 */
+		this.height = MARGIN + backgroundImages.size() * (rawHeight + MARGIN);
+		
+		
 		int counter = 0;
+		
 		
 		for (String name : backgroundImages)
 		{
 			int x = MARGIN;
-			int y = MARGIN + rawHeight * counter;					
-			ModelButton button = new ModelButton(x, y, rawWidth, rawHeight, name);		
+			int y = MARGIN + (rawHeight + MARGIN) * counter;					
+			BackgroundImageButton button = new BackgroundImageButton(x, y, rawWidth, rawHeight, name);		
 			button.setImage(Palette.createImage(name, rawWidth));
 			counter ++;
+
 			modelButtons.add(button);
-			button.setEnabled(true);
-			button.setVisible(true);
+
 		}
-		
-		
-		
+//		String bgname = backgroundImages.get(0);
+//		BackgroundImageButton button = new BackgroundImageButton(MARGIN, MARGIN, rawWidth, rawHeight, bgname);
+//		button.setImage(Palette.createImage(bgname, rawWidth));
+//
+//		modelButtons.add(button);
+	
+			
 	}
+	
 	
 
 
 	public void onClick(Button button) {
-		app.setBackgroundImage(button.getAction());
+		System.out.println("click");
+		//app.setBackgroundImage(button.getAction());
 	}
 
 	public void setVisible(boolean visible)
@@ -135,6 +148,7 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 	}
 
 	public void draw(Graphics2D g) {
+
 		if(!visible){return;}
 		int w = getWidth();
 		int h = getHeight();
@@ -154,9 +168,6 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 		g.fillRect(x, y, w, h);
 
 
-
-
-
 		if (showBorder) {
 			g.setColor(Color.WHITE);
 			g.setStroke(Palette.STROKE1);
@@ -167,34 +178,13 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 		/*
 		 * draw model buttons here
 		 */
+		
 
-		for(ModelButton button: modelButtons)
+		for(BackgroundImageButton button : modelButtons)
 		{
-//			boolean highlighted = (button.getAction().equals(loadedModel)) ? true : false;
-			// the button draw method just draws the image
-			button.draw(g, false);
-			// so we need to add text too
-			// - maybe I should extend Button class to a ModelButton class? 
-			g.setFont(new Font(Font.SANS_SERIF, 12, 12));
-			// to avoid sub stringing into empty space and get OOBException
-			int endChar = 0;
-			if(button.getLabel().length() < 13)
-			{
-				endChar = button.getLabel().length();
-			}
-			else
-			{
-				endChar = 13;
-			}
-			// draw name below image
-			g.drawString(button.getLabel().substring(0, endChar), 
-					(int)button.getShape().getBounds2D().getX() + 5,  
-					(int)button.getShape().getBounds2D().getY() + button.getImage().getHeight() + MARGIN / 2);
-			// if this was the last loaded model, then we draw a red rectangle around it
-			if(button.getLabel().equals(loadedModel))
-			{
-				// todo
-			}
+
+			button.draw(g);
+
 
 		}
 
@@ -205,10 +195,10 @@ public class SurfaceSelectorBackgroundImages extends Touchable {
 
 	public void onDown() {
 		this.target = null;
-		for (ModelButton button : modelButtons) {
+		for (BackgroundImageButton button : modelButtons) {
 			if (button.containsTouch(touchX, touchY) && button.isEnabled()) {
-				loadedModel = button.getAction();
-				app.loadModel(button.getAction(), button.getAction());
+//				loadedModel = button.getAction();
+				app.setBackgroundImage(button.getAction());
 				break;
 			}
 		}
